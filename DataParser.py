@@ -1,6 +1,7 @@
 import re
 import pandas as pd
 from config import *
+from datetime import datetime, timedelta
 
 
 def load_data():
@@ -72,7 +73,7 @@ def main():
     for row in data:
         text = row["text"]
         result = parse_text(text)
-        result["date"] = row["date"]
+        result["date"] = (datetime.strptime(row["date"], "%Y-%m-%d") + timedelta(-1)).strftime("%Y-%m-%d")
         parse_data.append(result)
     df = pd.DataFrame(parse_data)
     df.to_csv(result_data_file, mode="w", encoding="utf-8", index=False)
